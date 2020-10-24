@@ -131,7 +131,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-dark-high-contrast spacemacs-light)
+   dotspacemacs-themes '(spacemacs-light solarized-dark-high-contrast )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -266,7 +266,7 @@ values."
    dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'origami
+   dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -343,8 +343,15 @@ you should place your code here."
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-w") 'evil-delete-backward-word)
     )
+  ;; make * and # search act like vim
+  ;;(with-eval-after-load 'auto-highlight-symbol
+   ;;    (define-key evil-motion-state-map (kbd "*") 'evil-search-word-forward)
+    ;;   (define-key evil-motion-state-map (kbd "#") 'evil-search-word-backward))
+
   (add-to-list 'load-path "/home/jacksonmillsaps/svelte-mode")
   (require 'svelte-mode)
+  ;; Only render text left to right
+  (setq-default bidi-paragraph-direction 'left-to-right)
   )
 
 
@@ -359,10 +366,11 @@ you should place your code here."
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(beacon-color "#eab4484b8035")
- '(diary-entry-marker (quote font-lock-variable-name-face))
+ '(c-tab-always-indent t)
+ '(clean-aindent-mode t)
+ '(diary-entry-marker 'font-lock-variable-name-face)
  '(emms-mode-line-icon-image-cache
-   (quote
-    (image :type xpm :ascent center :data "/* XPM */
+   '(image :type xpm :ascent center :data "/* XPM */
 static char *note[] = {
 /* width height num_colors chars_per_pixel */
 \"    10   11        2            1\",
@@ -380,21 +388,20 @@ static char *note[] = {
 \"#..######.\",
 \"#######...\",
 \"######....\",
-\"#######..#\" };")))
- '(evil-emacs-state-cursor (quote ("#E57373" hbar)) t)
- '(evil-insert-state-cursor (quote ("#E57373" bar)) t)
+\"#######..#\" };"))
+ '(evil-emacs-state-cursor '("#E57373" hbar) t)
+ '(evil-insert-state-cursor '("#E57373" bar) t)
  '(evil-magit-use-z-for-folds t)
- '(evil-normal-state-cursor (quote ("#FFEE58" box)) t)
- '(evil-visual-state-cursor (quote ("#C5E1A5" box)) t)
+ '(evil-normal-state-cursor '("#FFEE58" box) t)
+ '(evil-visual-state-cursor '("#C5E1A5" box) t)
  '(evil-want-Y-yank-to-eol nil)
- '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
- '(frame-background-mode (quote dark))
- '(frame-brackground-mode (quote dark))
+ '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
+ '(frame-background-mode 'dark)
+ '(frame-brackground-mode 'dark)
  '(global-superword-mode t)
- '(gnus-logo-colors (quote ("#2fdbde" "#c0c0c0")) t)
+ '(gnus-logo-colors '("#2fdbde" "#c0c0c0") t)
  '(gnus-mode-line-image-cache
-   (quote
-    (image :type xpm :ascent center :data "/* XPM */
+   '(image :type xpm :ascent center :data "/* XPM */
 static char *gnus-pointer[] = {
 /* width height num_colors chars_per_pixel */
 \"    18    13        2            1\",
@@ -414,31 +421,35 @@ static char *gnus-pointer[] = {
 \"######..###.######\",
 \"###....####.######\",
 \"###..######.######\",
-\"###########.######\" };")) t)
- '(helm-completion-style (quote emacs))
- '(helm-grep-file-path-style (quote relative))
+\"###########.######\" };") t)
+ '(helm-completion-style 'emacs)
+ '(helm-grep-file-path-style 'relative)
  '(helm-grep-git-grep-command "git --no-pager grep -n%cH --color=always -e %p -- :/")
  '(highlight-indent-guides-auto-enabled nil)
+ '(indent-tabs-mode nil)
  '(js-chain-indent nil)
- '(js-expr-indent-offset 4)
+ '(js-enabled-frameworks '(javascript))
+ '(js-expr-indent-offset 0)
  '(js-indent-align-list-continuation nil)
  '(js-paren-indent-offset 4)
  '(js-switch-indent-offset 4)
  '(js2-bounce-indent-p t)
+ '(js2-mode-assume-strict t)
+ '(js2-mode-indent-ignore-first-tab nil)
  '(line-number-mode nil)
+ '(neo-auto-indent-point t)
  '(package-selected-packages
-   (quote
-    (xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help solarized-wombat-dark-theme solarized-wombat-dark-theme-theme solarized-gruvbox-dark-theme-theme solarized-gruvbox-dark-theme zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme origami helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-statistics company clojure-snippets auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md add-node-modules-path flyspell-correct-helm flyspell-correct auto-dictionary evil-vimish-fold vimish-fold tern yaml-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a flycheck-pos-tip pos-tip flycheck smeargle orgit magit-gitflow magit-popup helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+   '(ranger rainbow-mode rainbow-identifiers ox-twbs ox-reveal ox-gfm org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download magit-gh-pulls htmlize graphviz-dot-mode gnuplot github-search github-clone github-browse-file git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht diff-hl csv-mode company-quickhelp command-log-mode color-identifiers-mode adoc-mode markup-faces yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic solarized-dark-high-contrast-theme xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help solarized-wombat-dark-theme solarized-wombat-dark-theme-theme solarized-gruvbox-dark-theme-theme solarized-gruvbox-dark-theme zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme origami helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-statistics company clojure-snippets auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md add-node-modules-path flyspell-correct-helm flyspell-correct auto-dictionary evil-vimish-fold vimish-fold tern yaml-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode clj-refactor inflections paredit cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a flycheck-pos-tip pos-tip flycheck smeargle orgit magit-gitflow magit-popup helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit git-commit with-editor transient web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
  '(sgml-basic-offset 4)
  '(svelte-tag-relative-indent t)
+ '(tab-always-indent 'complete)
  '(tabbar-background-color "#353335333533")
  '(web-mode-script-padding 4)
  '(web-mode-style-padding 4)
  '(when
       (or
        (not
-        (boundp
-         (quote ansi-term-color-vector)))
+        (boundp 'ansi-term-color-vector))
        (not
         (facep
          (aref ansi-term-color-vector 0)))))
@@ -448,4 +459,4 @@ static char *gnus-pointer[] = {
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
+ '(default ((t (:background nil)))))
