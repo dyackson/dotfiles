@@ -46,14 +46,23 @@ values."
      auto-completion
      ;; better-defaults
      emacs-lisp
-     git
+     ;; SPC g s opens Magit git client full screen (q restores previous layout)
+     ;; refine hunk 'all highlights characters changed on each line
+     (git :variables
+          git-magit-status-fullscreen t
+          magit-diff-refine-hunk 'all)
      ;; markdown
      ;; org
      (shell :variables shell-enable-smart-eshell t)
      spell-checking
      syntax-checking
      themes-megapack
-     ;; version-control
+
+     ;; Highlight changes in buffers
+     ;; SPC g . transient state for navigating changes
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -115,7 +124,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -132,6 +141,7 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-light solarized-dark-high-contrast )
+
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -352,6 +362,10 @@ you should place your code here."
   (require 'svelte-mode)
   ;; Only render text left to right
   (setq-default bidi-paragraph-direction 'left-to-right)
+
+  ;; Do not highlight trailing whitespace
+  ;; - whitespace deleted on save using: dotspacemacs-whitespace-cleanup 'all
+  (setq spacemacs-show-trailing-whitespace nil)
   )
 
 
